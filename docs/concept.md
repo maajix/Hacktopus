@@ -116,7 +116,7 @@ execution_dict = {
     'description': 'Find URLs, files, directories via crawling, fuzzing, return available non duplicate once',
     'tags': ['recon', 'files', 'directories', 'active_scan'],
     'variables': {'url': '{{url}}'},
-    'stages': {
+    'container': {
         'first_stage': {
             'parallel': True,
             'description': 'Execute first_stage',
