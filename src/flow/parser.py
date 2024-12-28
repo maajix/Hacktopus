@@ -62,4 +62,4 @@ parsed_flow = parse_flow_file(yaml_to_json("example.yml").json)
 
 for stage in parsed_flow.stages:
     for task in stage.tasks:
-        print(task)
+        print(stage.name, "-", task)
