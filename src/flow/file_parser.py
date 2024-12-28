@@ -58,10 +58,3 @@ def parse_flow_file(flow_file: FlowFile) -> Flow:
         console.print(json_data)
     return flow
 
-
-example_flow_file = FlowFile(flow_filename="example.yml")
-parsed_flow = parse_flow_file(example_flow_file)
-
-for stage in parsed_flow.stages:
-    for task in stage.tasks:
-        print(stage.name, "-", task)
