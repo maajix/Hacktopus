@@ -1,0 +1,8 @@
+name: "Httpx"
+description: "Probe and discover alive web services from subdomains."
+documentation: "https://github.com/projectdiscovery/httpx"
+tags:
+  - web
+  - reconnaissance
+run_command: "httpx"
+accepts_stdin: true
