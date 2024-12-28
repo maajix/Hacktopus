@@ -1,11 +1,12 @@
+from data_classes.flowfile import FlowFile
 from src.data_classes.flow import Flow
 from src.data_classes.stage import Stage
 from src.data_classes.task import Task
-from src.file_converter.yaml_to_json import yaml_to_json
 
 
-def parse_flow_file(json_data: dict) -> Flow:
+def parse_flow_file(flow_file: FlowFile) -> Flow:
     flow = Flow()
+    json_data = flow_file.json
     try:
         flow.version = json_data.get("version")
         flow.name = json_data.get("name")
@@ -58,7 +59,8 @@ def parse_flow_file(json_data: dict) -> Flow:
     return flow
 
 
-parsed_flow = parse_flow_file(yaml_to_json("example.yml").json)
+example_flow_file = FlowFile(flow_filename="example.yml")
+parsed_flow = parse_flow_file(example_flow_file)
 
 for stage in parsed_flow.stages:
     for task in stage.tasks:
