@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hacktopus"
+version = "0.1.0"
+description = ""
+authors = ["Max Randhahn <49589091+maajix@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pyyaml = "^6.0.2"
+icecream = "^2.1.3"
+rich = "^13.9.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
