@@ -13,7 +13,7 @@ container:
     description: "Execute first_child_stage"
     tasks:
       - command: "echo first_child_stage"
-      - flow: "example_sub_child_flow"  # <-- references the SUB-CHILD flow
+      - flow: "example"  # <-- references the SUB-CHILD flow
 
   second_child_stage:
     description: "Execute second_child_stage"
