@@ -35,7 +35,7 @@ class FlowBuilder:
     def _insert_child_flow_stages(self, stage_list: list[list[Stage]]):
         """
         For each sub-list of stages in stage_list, insert them into self.parsed_flow_data.stages
-        in exactly the same order they appear. We do NOT reverse anything.
+        in exactly the same order they appear.
         """
         for child_stages in stage_list:
             if not child_stages:
