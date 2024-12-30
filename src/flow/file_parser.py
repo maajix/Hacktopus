@@ -5,8 +5,17 @@ from src.data_classes.task import Task
 
 
 def parse_flow_file(flow_file: FlowFile) -> Flow:
+    from rich.console import Console
+    console = Console()
     flow = Flow()
-    json_data = flow_file.json
+    json_data = flow_file.json if flow_file.json else {}
+
+    def _check_missing(keys: list) -> None:
+        for key_to_check in keys:
+            if key_to_check not in json_data.keys():
+                console.print(f"[ERR] Missing '{key_to_check}' key in '{flow_file.filename}'")
+                exit(-1)
+
     try:
         flow.version = json_data.get("version")
         flow.name = json_data.get("name")
@@ -14,6 +23,9 @@ def parse_flow_file(flow_file: FlowFile) -> Flow:
         flow.tags = json_data.get("tags")
         flow.variables = json_data.get("variables")
         flow.stages = []
+
+        required_keys = ["name", "description", "variables", "container"]
+        _check_missing(required_keys)
 
         container = json_data.get("container")
         tmp_stage = Stage()
@@ -51,10 +63,6 @@ def parse_flow_file(flow_file: FlowFile) -> Flow:
             tmp_stage = Stage()
 
     except KeyError:
-        from rich.console import Console
-        console = Console()
-
         console.print(f"[ERR] Could not parse json data")
         console.print(json_data)
     return flow
-

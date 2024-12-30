@@ -1,12 +1,10 @@
 version: "1.0"
-name: "Gather available URLs from Target"
-description: "Find URLs, files, directories via crawling, fuzzing, return available non duplicate once"
+name: "Example Flow"
+description: "Demonstrate how to create a flow"
 tags:
-  - recon
-  - files
-  - directories
-  - active_scan
+  - example
 
+# CLI arguments that will be passed to the stages
 variables:
   url: "{{url}}"
 
@@ -18,12 +16,12 @@ container:
       - alias: "paramspider:discover"
         options:
           - map:
-            - url: domain
-          - custom_func:
-            - url_to_domain: url
-            - some_func: some_param
+              - url: domain
+          - custom_func: # Execute in order
+              - url_to_domain: url
+              - example_func: url
       - command: "echo {{url}}"
-      - flow: "child_flow"
+      - flow: "example_child_flow"
 
   second_stage:
     description: "Execute second_stage"

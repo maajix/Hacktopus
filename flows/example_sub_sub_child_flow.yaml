@@ -1,0 +1,14 @@
+version: "1.0"
+name: "Example Sub Sub Child Flow"
+description: "Sub sub child flow example"
+tags:
+  - example
+
+variables:
+  a: ""
+
+container:
+  sub_sub_child_stage:
+    description: "Sub sub child stage"
+    tasks:
+      - command: "echo sub_sub_child_stage"

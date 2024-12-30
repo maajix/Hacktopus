@@ -9,5 +9,5 @@ class Flow:
     name: str = field(default="")
     description: str = field(default="")
     tags: list = field(default_factory=list)
-    variables: list = field(default_factory=list)
+    variables: dict = field(default_factory=dict)
     stages: list[Stage] = field(default_factory=list)
