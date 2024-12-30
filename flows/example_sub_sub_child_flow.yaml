@@ -5,7 +5,6 @@ tags:
   - example
 
 variables:
-  a: ""
 
 container:
   sub_sub_child_stage:

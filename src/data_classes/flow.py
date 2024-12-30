@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 
 from .stage import Stage
@@ -11,3 +13,9 @@ class Flow:
     tags: list = field(default_factory=list)
     variables: dict = field(default_factory=dict)
     stages: list[Stage] = field(default_factory=list)
+
+    def find_stage_index_via(self, stage_name) -> int | None:
+        for i, stage in enumerate(self.stages):
+            if stage.name == stage_name:
+                return i
+        return None

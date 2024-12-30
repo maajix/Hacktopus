@@ -21,9 +21,10 @@ container:
               - url_to_domain: url
               - example_func: url
       - command: "echo {{url}}"
-      - flow: "example_child_flow"
+
 
   second_stage:
     description: "Execute second_stage"
     tasks:
       - command: "echo second_stage"
+      - flow: "example_child_flow"
