@@ -29,33 +29,4 @@ class FlowBuilder:
                 alias_to_command(task=task)
 
 
-# @TODO
-"""
-...
-Task(
-    execution_type='flow',
-    execution_data='example_child_flow',
-    execution_options=[]
-)
-
-remove the task from the stage and create a new stage right after this one so that 
-a the stage has all the commands without the child flow
-Gather all the subflows in an array [top_flow, flow_in_top_flow, ...]
-Add them as separate stage but in reverse order so that the deepest flow is the first 
-
-e.g.
-stage_1
-Task(execution_type='command',execution_data='paramspider -s -d {{domain}}',..)
-Task(execution_type='command', execution_data='echo {{url}}'..)
-
-stage_subflow_1 <-- deepest flow
-# Task(execution_type='flow') <-- convert this to actual commands eg
-Task(execution_type='command',execution_data='echo child stage',..)
-
-stage_subflow_2 <-- second deepest flow
-...
-
-stage_2 <-- after we continue with the default stage
-"""
-
 builder = FlowBuilder(filename="example.yaml")
