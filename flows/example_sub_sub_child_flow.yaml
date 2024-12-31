@@ -11,3 +11,4 @@ container:
     description: "Sub sub child stage"
     tasks:
       - command: "echo sub_sub_child_stage"
+      - alias: "gau:fetch"

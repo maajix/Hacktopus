@@ -1,7 +1,7 @@
-from data_classes.flow import Flow
-from data_classes.flowfile import FlowFile
-from data_classes.stage import Stage
-from flow.file_parser import parse_flow_file
+from src.data_classes.flow import Flow
+from src.data_classes.flowfile import FlowFile
+from src.data_classes.stage import Stage
+from src.flow.file_parser import parse_flow_file
 
 
 def create_child_flow_arr(

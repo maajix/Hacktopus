@@ -1,4 +1,4 @@
-from data_classes.flowfile import FlowFile
+from src.data_classes.flowfile import FlowFile
 from src.data_classes.flow import Flow
 from src.data_classes.stage import Stage
 from src.data_classes.task import Task

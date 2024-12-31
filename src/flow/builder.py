@@ -1,11 +1,11 @@
 from rich import print as rprint
 
-from convert_alias_to_cmd import alias_to_command
-from data_classes.flowfile import FlowFile
-from data_classes.stage import Stage
-from file_parser import parse_flow_file
+from src.flow.convert_alias_to_cmd import alias_to_command
+from src.data_classes.flowfile import FlowFile
+from src.data_classes.stage import Stage
+from src.flow.file_parser import parse_flow_file
 from src.data_classes.flow import Flow
-from gather_child_flows import create_child_flow_arr
+from src.flow.gather_child_flows import create_child_flow_arr
 
 
 class FlowBuilder:
@@ -54,9 +54,3 @@ class FlowBuilder:
             for child_stage in child_stages:
                 self.parsed_flow_data.stages.insert(insert_pos, child_stage)
                 insert_pos += 1
-
-
-builder = FlowBuilder(filename="example.yaml")
-for stage in builder.parsed_flow_data.stages:
-    for task in stage.tasks:
-        print(f"Stage: {stage.name}, Task: {task.execution_data}")
