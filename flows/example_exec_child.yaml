@@ -9,12 +9,12 @@ variables:
   domain: "{{domain}}" # does not exists in parent
 
 container:
-  first_stage:
+  first_child_stage:
     description: "Execute child first_stage"
     tasks:
       - command: "echo 'child {{url}}'"
 
-  second_stage:
+  second_child_stage:
     description: "Execute child second_stage"
     tasks:
       - command: "echo 'child_second_stage - done!'"

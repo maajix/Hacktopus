@@ -9,13 +9,15 @@ variables:
 
 
 container:
-  first_child_stage:
+  first_stage:
     description: "Execute first_stage"
+    pipe_to:
+      - second_stage
     tasks:
-      - command: "echo {{url}}"
+      - command: "echo Parent stage url '{{url}}'"
 
-  second_child_stage:
+  second_stage:
     description: "Execute second_stage"
     tasks:
-      - command: "echo 'execute flow next!'"
+      - command: "xargs -i echo 'STDIN from parent stage: {}'"
       - flow: "example_exec_child"

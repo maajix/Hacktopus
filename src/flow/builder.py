@@ -5,7 +5,7 @@ from src.flow.file_parser import parse_flow_file
 from src.data_classes.flow import Flow
 from src.flow.gather_child_flows import create_child_flow_arr
 from src.utils.flow_helper import extract_variables_from
-from src.execution.stage_executer import execute_stage_tasks
+from src.execution.stage_executer import execute_flow
 
 
 class FlowBuilder:
@@ -80,9 +80,8 @@ class FlowBuilder:
 
     def run(self):
         from rich import print as rp
+        st_out = execute_flow(stages=self.parsed_flow_data.stages)
 
-        output = []
-        for stage in self.stages:
-            output.append(execute_stage_tasks(stage=stage, stream_live_output=False))
-
-        rp([out.strip("\n") for out in output])
+        for key, value in st_out.items():
+            rp(f"Stage: {key}")
+            rp(value.decode('utf-8'))

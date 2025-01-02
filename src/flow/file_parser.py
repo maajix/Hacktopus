@@ -33,8 +33,10 @@ def parse_flow_file(flow_file: FlowFile) -> Flow:
             stage_data = container.get(stage)
 
             tmp_stage.name = stage
-            tmp_stage.parallel = stage_data.get("parallel")
+            tmp_stage.parallel = stage_data.get("parallel", False)
             tmp_stage.description = stage_data.get("description")
+            tmp_stage.pipe_output_to = stage_data.get("pipe_to")
+
             tmp_stage.tasks = []
             try:
                 tmp_task = Task()
