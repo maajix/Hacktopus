@@ -108,12 +108,6 @@ def run(ctx, flowname: str):
         final_args = collect_missing(required_vars, provided_args)
 
         check_unknown(required_vars, provided_args)
-
-        # Execute flow with collected arguments
-        click.echo(f"\nRunning flow '{flowname}' with parameters:")
-        for arg, value in final_args.items():
-            click.echo(f"  {arg}: {value}")
-
         replace_exec_data_vars(final_vars=final_args, stages=loaded_flow.stages)
 
         loaded_flow.run()
