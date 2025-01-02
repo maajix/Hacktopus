@@ -1,0 +1,21 @@
+version: "1.0"
+name: "Example child Flow"
+description: "Demonstrate how to execute a child flow"
+tags:
+  - example
+
+variables:
+  url: "{{url}}"
+  domain: "{{domain}}" # does not exists in parent
+
+container:
+  first_stage:
+    description: "Execute child first_stage"
+    tasks:
+      - command: "echo child {{url}}"
+
+  second_stage:
+    description: "Execute child second_stage"
+    tasks:
+      - command: "echo 'child_second_stage - done!'"
+      - command: "echo '{{domain}} does not exists in parent'"

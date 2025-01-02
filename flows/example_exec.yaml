@@ -1,0 +1,21 @@
+version: "1.0"
+name: "Example Flow"
+description: "Demonstrate how to execute a flow"
+tags:
+  - example
+
+variables:
+  url: "{{url}}"
+
+
+container:
+  first_child_stage:
+    description: "Execute first_stage"
+    tasks:
+      - command: "echo {{url}}"
+
+  second_child_stage:
+    description: "Execute second_stage"
+    tasks:
+      - command: "execute flow next!"
+      - flow: "example_exec_child"

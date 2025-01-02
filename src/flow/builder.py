@@ -1,4 +1,4 @@
-from rich import print as rprint
+
 
 from src.flow.convert_alias_to_cmd import alias_to_command
 from src.data_classes.flowfile import FlowFile
@@ -53,4 +53,43 @@ class FlowBuilder:
 
             for child_stage in child_stages:
                 self.parsed_flow_data.stages.insert(insert_pos, child_stage)
+                self._append_child_vars(child_stage)
                 insert_pos += 1
+
+    def _append_child_vars(self, child_stage):
+        for child_task in child_stage.tasks:
+            matches = self._extract_variables_from_value(child_task.execution_data)
+            for match in matches:
+                self.parsed_flow_data.variables[match] = f"{{{{{match}}}}}"
+
+    @staticmethod
+    def _extract_variables_from_value(value: str) -> list[str]:
+        import re
+        pattern = r'(\{\{[^}]+\}\})'
+        if isinstance(value, str):
+            matches = re.findall(pattern, value)
+            return [match.replace("{{", "").replace("}}", "") for match in matches]
+
+    def replace_variables_with(self, final_vars: dict):
+        for stage in self.stages:
+            for task in stage.tasks:
+                matches = self._extract_variables_from_value(task.execution_data)
+                for match in matches:
+                    if match in final_vars:
+                        task.execution_data = task.execution_data.replace(f"{{{{{match}}}}}", final_vars.get(match))
+
+    @property
+    def stages(self) -> list[Stage]:
+        return self.parsed_flow_data.stages
+
+    @property
+    def variables(self) -> list[str]:
+        variables = []
+        yaml_content = self.flow_file_handler.json
+        if 'variables' in yaml_content:
+            for var_name, var_value in yaml_content['variables'].items():
+                if isinstance(var_value, str) and '{{' in var_value and '}}' in var_value:
+                    var = var_value.strip('{{}}').strip()
+                    variables.append(var)
+
+        return list(set(variables))

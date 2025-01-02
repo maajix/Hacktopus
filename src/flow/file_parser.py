@@ -56,13 +56,13 @@ def parse_flow_file(flow_file: FlowFile) -> Flow:
 
                     tmp_stage.tasks.append(tmp_task)
                     tmp_task = Task()
-            except KeyError as e:
+            except KeyError:
                 pass
 
             flow.stages.append(tmp_stage)
             tmp_stage = Stage()
 
     except KeyError:
-        console.print(f"[ERR] Could not parse json data")
+        console.print("[ERR] Could not parse json data")
         console.print(json_data)
     return flow
