@@ -17,5 +17,5 @@ container:
   second_child_stage:
     description: "Execute second_stage"
     tasks:
-      - command: "execute flow next!"
+      - command: "echo 'execute flow next!'"
       - flow: "example_exec_child"

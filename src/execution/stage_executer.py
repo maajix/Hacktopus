@@ -4,10 +4,20 @@ from shlex import split
 
 from src.data_classes.task import Task
 from src.data_classes.stage import Stage
+from rich import print as rprint
 
 
 def _execute(task: Task, stream_live_output=False) -> str:
     command = task.execution_data
+
+    if task.execution_type == "flow":
+        rprint(f"[FLOW] Starting flow '{task.execution_data}'")
+        return ""
+
+    elif task.execution_type == "command":
+        rprint(f"[CMD] Processing next: {command}")
+    else:
+        rprint(f"[ERR] Skipping unknown execution_type '{task.execution_type}'")
 
     if not stream_live_output:
         process = subprocess.Popen(split(command), stdout=subprocess.PIPE)
@@ -22,7 +32,7 @@ def _execute(task: Task, stream_live_output=False) -> str:
             process = subprocess.Popen(split(command), stdout=subprocess.PIPE)
 
             for line in iter(process.stdout.readline, b''):
-                print(line.decode('utf-8').strip())
+                rprint(line.decode('utf-8').strip())
                 output.append(line.decode('utf-8'))
 
             # Ensure the process finishes

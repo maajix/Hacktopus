@@ -10,12 +10,11 @@ def create_child_flow_arr(
         _insert_after: str = None
 ) -> list[list[Stage]]:
     """
-    Recursively gather all child flows (not including the given 'flow'),
-    removing any 'flow' tasks from the final data, and return them in
-    reversed order (relative to discovery) for the *stages themselves*.
-
-    Tasks within each stage remain in their original order as returned
-    by parse_flow_file (i.e., we do NOT reverse tasks).
+    This function creates a list of lists of stages from a parent flow object.
+    Each stage in the parent flow is converted into a child flow,
+    and then each task in that child flow is inserted at the front of the returned list.
+    The resulting list is then recursively created by calling this function
+    again for any tasks that are also flows.
     """
     try:
         if _rev_list is None:

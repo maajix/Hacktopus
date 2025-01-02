@@ -12,7 +12,7 @@ container:
   first_stage:
     description: "Execute child first_stage"
     tasks:
-      - command: "echo child {{url}}"
+      - command: "echo 'child {{url}}'"
 
   second_stage:
     description: "Execute child second_stage"
