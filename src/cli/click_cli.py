@@ -1,9 +1,17 @@
 import click
 from src.flow.builder import FlowBuilder
+from src.utils.flow_helper import replace_exec_data_vars
 
 
 def parse_to_dict(ctx) -> dict:
-    # Parse provided arguments into a dict
+    """
+    Parse provided arguments into a dict
+    :param ctx: click context containing the arguments
+    :return: dict with parsed arguments
+
+    :Example:
+    >>> parse_to_dict({'--var': 'value', '--another-var': 'another-value'})
+    """
     provided_args = {}
     i = 0
     while i < len(ctx.args):
@@ -21,8 +29,16 @@ def parse_to_dict(ctx) -> dict:
     return provided_args
 
 
-def collect_missing(required_vars, provided_args) -> dict:
-    # Collect missing variables interactively
+def collect_missing(required_vars: list[str], provided_args: dict) -> dict:
+    """
+    Collect missing variables interactively
+    :param required_vars: dict of required variables obtained from flow.variables
+    :param provided_args: provided arguments by the user via the cli obtained from parse_to_dict
+    :return: dict of missing variables with prompt responses interactively
+
+    :Example:
+    >>> collect_missing(['required_var1', 'required_var2'], {'provided_arg1': 'value'})
+    """
     final_args = {}
     for var in required_vars:
         if var in provided_args:
@@ -35,15 +51,18 @@ def collect_missing(required_vars, provided_args) -> dict:
     return final_args
 
 
-def check_unknown(ctx, required_vars, provided_args) -> set:
-    # Validate no unknown arguments were provided
+def check_unknown(required_vars: list[str], provided_args: dict) -> None:
+    """
+    Validate no unknown arguments were provided and inform the user
+    :param required_vars: dict of required variables obtained from flow.variables
+    :param provided_args: provided arguments by the user via the cli obtained from parse_to_dict
+
+    :Example:
+    >>> check_unknown(['required_var1', 'required_var2'], {'provided_arg1': 'value'})
+    """
     unknown_args = set(provided_args.keys()) - set(required_vars)
     if unknown_args:
-        click.echo(f"Warning: Unknown arguments provided: {', '.join(unknown_args)}")
-        if not click.confirm("Do you want to continue?"):
-            ctx.exit(1)
-
-    return unknown_args
+        click.echo(f"[WRN] Skipping unknown argument(s) provided: {', '.join(unknown_args)}")
 
 
 @click.group()
@@ -80,8 +99,6 @@ def run(ctx, flowname: str):
     """
 
     try:
-        from rich import print as rp
-
         # Load required variables from flow
         loaded_flow = FlowBuilder(filename=f"{flowname}.yaml")
         required_vars = loaded_flow.variables
@@ -89,15 +106,16 @@ def run(ctx, flowname: str):
         provided_args = parse_to_dict(ctx)
         final_args = collect_missing(required_vars, provided_args)
 
-        check_unknown(ctx, required_vars, provided_args)
+        check_unknown(required_vars, provided_args)
 
         # Execute flow with collected arguments
         click.echo(f"\nRunning flow '{flowname}' with parameters:")
         for arg, value in final_args.items():
             click.echo(f"  {arg}: {value}")
 
-        loaded_flow.replace_variables_with(final_args)
-        rp(loaded_flow.parsed_flow_data)
+        replace_exec_data_vars(final_vars=final_args, stages=loaded_flow.stages)
+
+        loaded_flow.run()
 
     except Exception as e:
         click.echo(f"Error running flow: {str(e)}", err=True)

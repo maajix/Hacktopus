@@ -1,11 +1,10 @@
-
-
 from src.flow.convert_alias_to_cmd import alias_to_command
 from src.data_classes.flowfile import FlowFile
 from src.data_classes.stage import Stage
 from src.flow.file_parser import parse_flow_file
 from src.data_classes.flow import Flow
 from src.flow.gather_child_flows import create_child_flow_arr
+from src.utils.flow_helper import extract_variables_from
 
 
 class FlowBuilder:
@@ -58,25 +57,9 @@ class FlowBuilder:
 
     def _append_child_vars(self, child_stage):
         for child_task in child_stage.tasks:
-            matches = self._extract_variables_from_value(child_task.execution_data)
+            matches = extract_variables_from(child_task.execution_data)
             for match in matches:
                 self.parsed_flow_data.variables[match] = f"{{{{{match}}}}}"
-
-    @staticmethod
-    def _extract_variables_from_value(value: str) -> list[str]:
-        import re
-        pattern = r'(\{\{[^}]+\}\})'
-        if isinstance(value, str):
-            matches = re.findall(pattern, value)
-            return [match.replace("{{", "").replace("}}", "") for match in matches]
-
-    def replace_variables_with(self, final_vars: dict):
-        for stage in self.stages:
-            for task in stage.tasks:
-                matches = self._extract_variables_from_value(task.execution_data)
-                for match in matches:
-                    if match in final_vars:
-                        task.execution_data = task.execution_data.replace(f"{{{{{match}}}}}", final_vars.get(match))
 
     @property
     def stages(self) -> list[Stage]:
@@ -93,3 +76,6 @@ class FlowBuilder:
                     variables.append(var)
 
         return list(set(variables))
+
+    def run(self):
+        pass
